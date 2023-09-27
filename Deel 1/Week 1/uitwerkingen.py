@@ -41,67 +41,72 @@ def compute_cost(X: np.ndarray, y: np.ndarray, θ: np.ndarray) -> float:
     return J
 
 
-def gradient_descent(X, y, theta, alpha, num_iters):
-    #OPGAVE 3a
-    # In deze opgave wordt elke parameter van theta num_iter keer geüpdate om de optimale waarden
-    # voor deze parameters te vinden. Per iteratie moet je alle parameters van theta update.
+def gradient_descent(X: np.ndarray,
+                     y: np.ndarray,
+                     θ: np.ndarray,
+                     α: float,
+                     num_iters: int) -> tuple[np.ndarray, list]:
+    """
+    Performs gradient descent to learn theta by taking num_iters gradient steps
+    with learning rate alpha.
 
-    # Elke parameter van theta wordt verminderd met de som van de fout van alle datapunten
-    # vermenigvuldigd met het datapunt zelf (zie Blackboard voor de formule die hierbij hoort).
-    # Deze som zelf wordt nog vermenigvuldigd met de 'learning rate' alpha.
+    :param X: the input vector
+    :param y: the actual output values
+    :param θ: the current parameters
+    :param alpha: the learning rate
+    :param num_iters: the number of iterations
 
-    # Een mogelijk stappenplan zou zijn:
-    #
-    # Voor elke iteratie van 1 tot num_iters:
-    #   1. bepaal de voorspelling voor het datapunt, gegeven de huidige waarde van theta
-    #   2. bepaal het verschil tussen deze voorspelling en de werkelijke waarde
-    #   3. vermenigvuldig dit verschil met de i-de waarde van X
-    #   4. update de i-de parameter van theta, namelijk door deze te verminderen met
-    #      alpha keer het gemiddelde van de som van de vermenigvuldiging uit 3
-
-    m,n = X.shape
-    costs = []
-
-    # YOUR CODE HERE
-
-    # aan het eind van deze loop retourneren we de nieuwe waarde van theta
-    # (wat is de dimensionaliteit van theta op dit moment?).
-
-    return theta, costs
+    :return: the learned parameters [θ, costs]
+    """
+    m: int = X.shape[0]
+    costs: list = []
+    for i in range(1, num_iters):
+        pred = (X @ θ.T) - y  # Predict by multiplying X with θ
+        θ = θ - (α / m) * (pred.T @ X)  # Doesn't matter what this means
+        costs.append(compute_cost(X, y, θ.T))  # Add the cost to the list
+    return θ, costs
 
 
-def draw_costs(data): 
-    # OPGAVE 3b
-    # YOUR CODE HERE
-    pass
+def draw_costs(data) -> None:
+    """
+    Draws a graph of the costs over the iterations.
+    """
+    plt.plot(data)
+    plt.show()
+    return None
 
-def contour_plot(X, y):
-    #OPGAVE 4
-    # Deze methode tekent een contour plot voor verschillende waarden van theta_0 en theta_1.
-    # De infrastructuur en algemene opzet is al gegeven; het enige wat je hoeft te doen is 
-    # de matrix J_vals vullen met waarden die je berekent aan de hand van de methode computeCost,
-    # die je hierboven hebt gemaakt.
-    # Je moet hiervoor door de waarden van t1 en t2 itereren, en deze waarden in een ndarray
-    # zetten. Deze ndarray kun je vervolgens meesturen aan de functie computeCost. Bedenk of je nog een
-    # transformatie moet toepassen of niet. Let op: je moet computeCost zelf *niet* aanpassen.
+
+def contour_plot(X: np.ndarray, y: np.ndarray) -> None:
+    """
+    Plots a contour plot of the cost function J(θ) over a grid of values for
+    θ0 and θ1.
+
+    :param X: the input vector
+    :param y: the actual output values
+
+    :return: None
+    """
 
     fig = plt.figure()
-    ax = fig.gca(projection = '3d')
-    jet = plt.get_cmap('jet')
+    ax = fig.add_subplot(projection='3d')
 
     t1 = np.linspace(-10, 10, 100)
     t2 = np.linspace(-1, 4, 100)
     T1, T2 = np.meshgrid(t1, t2)
 
-    J_vals = np.zeros( (len(t2), len(t2)) )
+    J_vals = np.zeros((len(t1), len(t2)))
 
-    #YOUR CODE HERE 
+    for i in range(len(t1)):
+        for j in range(len(t2)):
+            θ = np.array([t1[i], t2[j]])
+            J_vals[i, j] = compute_cost(X, y, θ)
 
-    surf = ax.plot_surface(T1, T2, J_vals, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+    ax.plot_surface(T1, T2, J_vals, rstride=1, cstride=1,
+                    cmap=cm.coolwarm, linewidth=0, antialiased=False)
 
-    xLabel = ax.set_xlabel(r'$\theta_0$', linespacing=3.2)
-    yLabel = ax.set_ylabel(r'$\theta_1$', linespacing=3.1)
-    zLabel = ax.set_zlabel(r'$J(\theta_0, \theta_1)$', linespacing=3.4)
+    ax.set_xlabel(r'$\theta_0$', linespacing=3.2)
+    ax.set_ylabel(r'$\theta_1$', linespacing=3.1)
+    ax.set_zlabel(r'$J(\theta_0, \theta_1)$', linespacing=3.4)
 
     ax.dist = 10
 
