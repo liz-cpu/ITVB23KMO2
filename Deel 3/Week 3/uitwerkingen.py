@@ -4,7 +4,6 @@ import tensorflow as tf
 from tensorflow import keras
 
 
-# OPGAVE 1a
 def plot_image(img: np.ndarray, label: str) -> None:
     """
     Plots an image with the given label.
@@ -20,7 +19,6 @@ def plot_image(img: np.ndarray, label: str) -> None:
     plt.show()
 
 
-# OPGAVE 1b
 def scale_data(X: np.ndarray) -> np.ndarray:
     """
     Transform the given data to the range [0, 1].
@@ -30,7 +28,6 @@ def scale_data(X: np.ndarray) -> np.ndarray:
     return X / np.max(X)
 
 
-# OPGAVE 1c
 def build_model():
     """
     Creates a keras.Sequential model with the following layers:
@@ -53,45 +50,43 @@ def build_model():
     return model
 
 
-# OPGAVE 2a
 def conf_matrix(labels, pred):
+    """
+    Calculates the confusion matrix for the given labels and predictions.
+
+    :param labels: The labels of the data.
+    :param pred: The predictions of the data.
+    """
     return tf.math.confusion_matrix(labels, pred)
 
 
-# OPGAVE 2b
-def conf_els(conf, labels):
-    # Deze methode krijgt een confusion matrix mee (conf) en een set van labels. Als het goed is, is
-    # de dimensionaliteit van de matrix gelijk aan len(labels) × len(labels) (waarom?). Bereken de
-    # waarden van de TP, FP, FN en TN conform de berekening in de opgave. Maak vervolgens gebruik van
-    # de methodes zip() en list() om een list van len(labels) te retourneren, waarbij elke tupel
-    # als volgt is gedefinieerd:
+def conf_els(conf: np.ndarray, labels: list[str]) -> list[tuple[str, int, int, int, int]]:
+    """
+    Calculates the true positives, false positives, false negatives and true negatives for each label.
 
-    #     (categorie:string, tp:int, fp:int, fn:int, tn:int)
+    :param conf: The confusion matrix.
+    :param labels: The labels of the confusion matrix.
 
-    # Check de documentatie van numpy diagonal om de eerste waarde te bepalen.
-    # https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html
-
-    # YOUR CODE HERE
-    pass
-
-# OPGAVE 2c
+    :return: A list of tuples containing the label, true positives, false positives, false negatives and true negatives.
+    """
+    tp = np.diagonal(conf)
+    fp = np.sum(conf, axis=1) - tp
+    fn = np.sum(conf, axis=0) - tp
+    tn = np.sum(conf) - tp - fp - fn
+    return [(labels[i], tp[i], fp[i], fn[i], tn[i]) for i in range(len(labels))]
 
 
-def conf_data(metrics):
-    # Deze methode krijgt de lijst mee die je in de vorige opgave hebt gemaakt (dus met lengte len(labels))
-    # Maak gebruik van een list-comprehension om de totale tp, fp, fn, en tn te berekenen en
-    # bepaal vervolgens de metrieken die in de opgave genoemd zijn. Retourneer deze waarden in de
-    # vorm van een dictionary (de scaffold hiervan is gegeven).
+def conf_data(metrics: list[tuple[str, int, int, int, int]]) -> dict[str, int]:
 
-    # VERVANG ONDERSTAANDE REGELS MET JE EIGEN CODE
+    tp = sum([m[1] for m in metrics])
+    fp = sum([m[2] for m in metrics])
+    fn = sum([m[3] for m in metrics])
+    tn = sum([m[4] for m in metrics])
 
-    tp = 1
-    fp = 1
-    fn = 1
-    tn = 1
+    tpr = tp / (tp + fn)
+    ppv = tp / (tp + fp)
+    tnr = tn / (tn + fp)
+    fpr = fp / (fp + tn)
 
-    # BEREKEN HIERONDER DE JUISTE METRIEKEN EN RETOURNEER DIE
-    # ALS EEN DICTIONARY
-
-    rv = {'tpr': 0, 'ppv': 0, 'tnr': 0, 'fpr': 0}
+    rv = {'tpr': tpr, 'ppv': ppv, 'tnr': tnr, 'fpr': fpr}
     return rv
