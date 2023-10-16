@@ -41,11 +41,11 @@ print ("Laden van de data...")
 labels = ['T-shirt/topje', 'Broek', 'Pullover', 'Jurk', 'Jas', 'Sandalen', 'Shirt', 'Sneaker', 'Tas', 'Lage laars'] 
 print ("Done.")
 
-print (f"Formaat van de train_images: {train_images.shape}")
-print (f"Formaat van de train_labels: {train_labels.shape}")
-print (f"Formaat van de test_images: {test_images.shape}")
-print (f"Formaat van de test_labels: {test_labels.shape}")
-print (f"Grootte van de labels: {len(labels)}")
+# print (f"Formaat van de train_images: {train_images.shape}")
+# print (f"Formaat van de train_labels: {train_labels.shape}")
+# print (f"Formaat van de test_images: {test_images.shape}")
+# print (f"Formaat van de test_labels: {test_labels.shape}")
+# print (f"Grootte van de labels: {len(labels)}")
 
 # ===============  OPGAVE 1 ======================
 # ===============  OPGAVE 1a ======================
@@ -57,7 +57,7 @@ else:
     hyp = labels[train_labels[rnd]]
     plot_image(train_images[rnd], hyp)
 
-input ("Druk op enter om verder te gaan...")
+# input ("Druk op enter om verder te gaan...")
 
 # ===============  OPGAVE 1b ======================
 X = np.array( ([1,2,3,4],[2,2,4,4],[4,3,2,1]) )
@@ -71,7 +71,7 @@ print (r)
 train_images = scale_data(train_images)
 test_images = scale_data(test_images)
 
-input ("Druk op enter om verder te gaan...")
+# input ("Druk op enter om verder te gaan...")
 
 
 # ===============  OPGAVE 1c ======================
@@ -82,7 +82,7 @@ print ("Trainen van het model...")
 model.fit(train_images, train_labels, epochs=6)
 print ("Training afgerond.")
 
-input ("Druk op enter om verder te gaan...")
+# input ("Druk op enter om verder te gaan...")
 
 
 # ===============  OPGAVE 2 ======================

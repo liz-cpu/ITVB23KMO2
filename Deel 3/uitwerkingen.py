@@ -10,9 +10,9 @@ def plot_image(img, label):
     # Maak gebruik van plt.cm.binary voor de cmap-parameter van plt.imgshow.
 
     # YOUR CODE HERE
-
-    pass
-
+    plt.imshow(img, plt.cm.get_cmap("binary"))
+    plt.xlabel(label)
+    plt.show()
 
 # OPGAVE 1b
 def scale_data(X):
@@ -22,8 +22,7 @@ def scale_data(X):
     # Deel alle elementen in de matrix 'element wise' door de grootste waarde in deze matrix.
 
     # YOUR CODE HERE
-
-    pass
+    return X / np.amax(X)
 
 # OPGAVE 1c
 def build_model():
@@ -37,12 +36,20 @@ def build_model():
 
     # Het staat je natuurlijk vrij om met andere settings en architecturen te experimenteren.
 
-    model = None
+    # make model
+    model = tf.keras.Sequential()
+    
+    # Add different layers
+    model.add(tf.keras.layers.Flatten(input_shape=(28,28)))
+    model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+    model.add(tf.keras.layers.Dense(10, activation=tf.nn.softmax))
 
-    # YOUR CODE HERE
-
+    model.compile(optimizer=tf.keras.optimizers.Adam(),
+                  loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+                #   metrics=tf.keras.metrics.Accuracy())
+                  metrics=['accuracy'])
+    
     return model
-
 
 # OPGAVE 2a
 def conf_matrix(labels, pred):
@@ -51,7 +58,7 @@ def conf_matrix(labels, pred):
     # https://www.tensorflow.org/api_docs/python/tf/math/confusion_matrix
     
     # YOUR CODE HERE
-    pass
+    return tf.math.confusion_matrix(labels, pred)
     
 
 # OPGAVE 2b
@@ -68,7 +75,23 @@ def conf_els(conf, labels):
     # https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html
  
     # YOUR CODE HERE
-    pass
+    results = list()
+
+    # for i in range(len(labels)):
+    #     tp_i = conf[i][i]
+    #     fp_i = conf[1][i] - tp_i
+    #     fn_i = conf[i][1] - tp_i
+    #     tn_i = conf[1][1] - tp_i - fp_i - fn_i
+    #     results.append((labels[i], tp_i, fp_i, fn_i, tn_i))
+
+    for label, row in zip(labels, conf):
+        tp_i = row[labels.index(label)]
+        fp_i = sum(row) - tp_i
+        fn_i = sum(conf[labels.index(label)]) - tp_i
+        tn_i = sum(map(sum, conf)) - tp_i - fp_i - fn_i
+        results.append((label, tp_i, fp_i, fn_i, tn_i))
+
+    return np.diagonal(results)
 
 # OPGAVE 2c
 def conf_data(metrics):
@@ -78,14 +101,10 @@ def conf_data(metrics):
     # vorm van een dictionary (de scaffold hiervan is gegeven).
 
     # VERVANG ONDERSTAANDE REGELS MET JE EIGEN CODE
-    
-    tp = 1
-    fp = 1
-    fn = 1
-    tn = 1
+    tp, fp, fn, tn = [int(metrics[i]) for i in range(1, len(metrics))]
 
     # BEREKEN HIERONDER DE JUISTE METRIEKEN EN RETOURNEER DIE 
     # ALS EEN DICTIONARY
 
-    rv = {'tpr':0, 'ppv':0, 'tnr':0, 'fpr':0 }
+    rv = {'tpr':tp/(tp+fn), 'ppv':tp/(tp+fp), 'tnr':tn/(tn+fp), 'fpr':fp/(fp+tn) }
     return rv
