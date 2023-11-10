@@ -13,4 +13,4 @@ Click the ✅ symbol to get linked to the most up-to-date version of the file.
 | Week 3 **Neural networks evaluation** | [✅](https://github.com/liz-cpu/ITVB23KMO2/blob/alisia/Deel%203/uitwerkingen.py) | [✅](https://github.com/liz-cpu/ITVB23KMO2/blob/Liz/Deel%203/Week%203/uitwerkingen.py) |
 | Model evaluation notebook | [✅](https://github.com/liz-cpu/ITVB23KMO2/blob/alisia/Deel%203/Opdracht%20model-evaluatie.ipynb) | [✅](https://github.com/liz-cpu/ITVB23KMO2/blob/Liz/Deel%203/Opdracht%20model-evaluatie.ipynb) |
 | DBSCAN notebook | [✅](https://github.com/liz-cpu/ITVB23KMO2/blob/alisia/Deel%203/Opdracht%20DBSCAN.ipynb) | [✅](https://github.com/liz-cpu/ITVB23KMO2/blob/Liz/Deel%203/Opdracht%20DBSCAN.ipynb) |
-| Kaggle.com | [✅](Eindopdracht/sign_language.ipynb) | [✅](Eindopdracht/sign_language.ipynb) |
+| Sign Language MNIST | [✅](Eindopdracht/sign_language.ipynb) | [✅](Eindopdracht/sign_language.ipynb) |
