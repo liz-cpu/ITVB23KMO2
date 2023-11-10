@@ -129,8 +129,7 @@ def contour_plot(X, y):
     # transformatie moet toepassen of niet. Let op: je moet computeCost zelf *niet* aanpassen.
 
     fig = plt.figure()
-    # ax = fig.gca(projection = '3d')
-    ax = Axes3D(fig)
+    ax = fig.add_subplot(projection = '3d')
     jet = plt.get_cmap('jet')
 
     t1 = np.linspace(-10, 10, 100)
@@ -139,9 +138,14 @@ def contour_plot(X, y):
 
     # print(T1, T2)
 
-    J_vals = np.zeros( (len(t2), len(t2)) )
+    J_vals = np.zeros( (len(t1), len(t2)) )
 
-    #YOUR CODE HERE 
+    #YOUR CODE HERE
+    for i in range(len(t1)):
+        for j in range(len(t2)):
+            arr = np.array([t1[i], t2[j]])
+            J_vals[i, j] = compute_cost(X, y, arr)
+    
 
     surf = ax.plot_surface(T1, T2, J_vals, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 

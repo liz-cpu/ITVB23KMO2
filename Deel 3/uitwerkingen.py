@@ -14,6 +14,7 @@ def plot_image(img, label):
     plt.xlabel(label)
     plt.show()
 
+
 # OPGAVE 1b
 def scale_data(X):
     # Deze methode krijgt een matrix mee waarin getallen zijn opgeslagen van 0..m, en hij 
@@ -35,10 +36,9 @@ def build_model():
     # en retourneer het resultaat.
 
     # Het staat je natuurlijk vrij om met andere settings en architecturen te experimenteren.
-
     # make model
     model = tf.keras.Sequential()
-    
+
     # Add different layers
     model.add(tf.keras.layers.Flatten(input_shape=(28,28)))
     model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
@@ -48,8 +48,9 @@ def build_model():
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),
                 #   metrics=tf.keras.metrics.Accuracy())
                   metrics=['accuracy'])
-    
+
     return model
+
 
 # OPGAVE 2a
 def conf_matrix(labels, pred):
@@ -102,7 +103,6 @@ def conf_data(metrics):
 
     # VERVANG ONDERSTAANDE REGELS MET JE EIGEN CODE
     tp, fp, fn, tn = [int(metrics[i]) for i in range(1, len(metrics))]
-
     # BEREKEN HIERONDER DE JUISTE METRIEKEN EN RETOURNEER DIE 
     # ALS EEN DICTIONARY
 
